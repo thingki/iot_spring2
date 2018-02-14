@@ -1,0 +1,84 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!-- 
+    공통적으로 사용하는 파일!!
+     -->
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="root" value="${pageContext.request.contextPath}"/>
+<c:set var="rPath" value="${root}/resources"/>
+<c:set var="pPath" value="${root}/path"/>
+<c:set var="dPath" value="${rPath}/dx"/>
+
+<c:set var="ver" value="?version=1.0.1d"/>
+
+<link rel="stylesheet" type="text/css" href="${dPath}/fonts/font_roboto/roboto.css${ver}"/>
+
+<link rel="stylesheet" type="text/css" href="${dPath}/skins/skyblue/dhtmlx.css"/>
+<link rel="stylesheet" type="text/css" href="${dPath}/skins/web/dhtmlx.css"/>
+<link rel="stylesheet" type="text/css" href="${dPath}/skins/terrace/dhtmlx.css"/>
+<link rel="stylesheet" type="text/css" href="${dPath}/dhtmlx.css${ver}"/>
+<link rel="stylesheet" type="text/css" href="${rPath}/css/common.css${ver}"/>
+<link rel="stylesheet" type="text/css" href="${rPath}/css/headerandbody.css${ver}"/>
+<script src="${rPath}/js/jquery.min.js${ver}" charset="utf-8"></script>
+<script src="${rPath}/js/common.js${ver}"></script>
+<script src="${dPath}/dhtmlx.js${ver}" charset="utf-8"></script>
+
+<!-- Chrome, Safari, IE -->
+<link rel="shortcut icon" href="${rPath}/imgs/favicon.png">
+<!-- Firefox, Opera (Chrome and Safari say thanks but no thanks) -->
+<link rel="icon" href="${rPath}/imgs/favicon.png">
+
+
+<%   
+String uri = request.getRequestURI();
+int idx = uri.lastIndexOf(".");
+if (idx != -1) {
+	uri = uri.substring(8, idx);
+}
+%>
+
+<script>
+$(document).ready(function(){
+	if(<%= session.getAttribute("menuList") %>==null){
+		function menuListCB(res){
+			   console.log(res.list);
+			}
+			var au = new AjaxUtil("${root}/menu/list/", null, "get");
+			au.send(menuListCB);
+	}
+		
+		
+	   $("li a[href='<%=uri%>']").parent().attr("class", "active");
+	})
+</script>
+
+
+<body>
+<div class="night">
+  <div class="stars">
+    <div id='star1'></div>
+    <div id='star2'></div>
+    <div id='star3'></div>
+  </div>
+</div>
+
+<div class="logo-d">
+		<!-- 메인가운데 화면<img src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-white@10x.png" alt=""> -->
+	</div>
+<div class="line"></div>
+  <div id="container">
+    <div id="dock">
+      <ul>
+		<c:forEach items="${menuList}" var="menu">
+			<li>
+			<span>${menu.mName}</span>
+			<a href="${menu.mUrl}"><img src="${rPath}/imgs/icon/${menu.mDesc}.png"/></a>
+			</li>
+		</c:forEach>
+      </ul>
+    </div>
+  </div>
+</body>
