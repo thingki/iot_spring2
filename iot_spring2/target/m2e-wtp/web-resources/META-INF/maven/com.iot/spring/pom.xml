@@ -117,7 +117,9 @@
          <scope>test</scope>
       </dependency>
 <!-- 여기서 부터 추가한 maven dependency 입니다!! -->
+
       <!-- Jackson -->
+      <!-- Jackson json > model, map, list으로 변환-->
       <dependency>
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-core</artifactId>
@@ -135,18 +137,39 @@
     </dependency>
 
       <!-- Apache Commons -->
+      <!--자바 기반의 IO관련 오픈소스 Input/Output을 제공하는 유틸리티 컴포넌트 
+      Utility classes - with static methods to perform common tasks
+      Input - useful Input Stream and Reader implementations
+      Output - useful Output Stream and Writer implementations
+      Filters - various implementations of file filters
+      Comparators - various implementations of java.util.Comparator for files
+      File Monitor - a component for monitoring file system events-->
+      <!-- 사용자가 파일리스트롤 찾을떄 사용하는 파일 필터 -->
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>2.5</version>
       </dependency>
+      
+      <!--  웹 애플리케이션과 서블릿을 위한 파일 업로드 기능을 제공하는 컴포넌트 -->
+      <!-- 서버 및 웹 애플리케이션에 강력한 고성능 파일 업로드 기능을 손쉽게 추가할 수 있습니다. -->
       <dependency>
          <groupId>commons-fileupload</groupId>
          <artifactId>commons-fileupload</artifactId>
          <version>1.3.3</version>
       </dependency>
-
+      
+      <!-- Mybatis -->
+      <!-- sql맵핑 -->
+      <dependency>
+         <groupId>org.mybatis</groupId>
+         <artifactId>mybatis</artifactId>
+         <version>3.4.5</version>
+      </dependency>
+		
       <!-- mybatis-spring -->
+      <!-- MyBatis mappers and SqlSessions and inject them into other beans -->
+      <!--  MyBatis가 Spring 트랜잭션에 참여하도록 허용한다 -->
       <dependency>
          <groupId>org.mybatis</groupId>
          <artifactId>mybatis-spring</artifactId>
@@ -154,6 +177,7 @@
       </dependency>
 
       <!-- mariadb connector -->
+      <!-- connect applications developed in Java to MariaDB and MySQL databases using the standard JDBC API -->
       <dependency>
          <groupId>org.mariadb.jdbc</groupId>
          <artifactId>mariadb-java-client</artifactId>
@@ -161,19 +185,16 @@
       </dependency>
 
       <!-- commons-dbcp2 -->
+       <!-- ASF라이센스에 따라 효율적이고 기능이 풍부한 패키지를 만들고 유지하는 데 필요한 노력을 조정할 수 있는 기회를 제공합니다. -->
       <dependency>
          <groupId>org.apache.commons</groupId>
          <artifactId>commons-dbcp2</artifactId>
          <version>2.2.0</version>
       </dependency>
-      <!-- Mybatis -->
-      <dependency>
-         <groupId>org.mybatis</groupId>
-         <artifactId>mybatis</artifactId>
-         <version>3.4.5</version>
-      </dependency>
+      
 
       <!-- Spring-jdbc -->
+      <!-- jdbc템플릿을 사용하기위해 -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-jdbc</artifactId>
@@ -181,6 +202,7 @@
       </dependency>
 
       <!-- hibernate-validator -->
+      <!--빈검증,참조,구현 //주석 기반 제약 조건을 사용하여 표준화 된 방식으로 유효성 검사 규칙을 표현하고 다양한 프레임 워크와의 투명한 통합의 이점을 누립니다. -->
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-validator</artifactId>
@@ -188,12 +210,15 @@
       </dependency>
 
       <!-- aspectjweaver -->
+       <!-- aop사용가능 -->
       <dependency>
          <groupId>org.aspectj</groupId>
          <artifactId>aspectjweaver</artifactId>
          <version>1.6.8</version>
       </dependency>
+      
       <!-- cglib -->
+       <!-- 실행중 인 자프로그램에 클레스추가함 -->
       <dependency>
          <groupId>cglib</groupId>
          <artifactId>cglib</artifactId>

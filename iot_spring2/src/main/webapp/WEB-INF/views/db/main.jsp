@@ -21,23 +21,74 @@ div.controls {
 	color: #404040;
 	height: 80px;
 }
+
+.my_ftr {
+	background-color: white;
+	padding-top: 9px;
+}
+
+.my_ftr .text {
+	font-family: Roboto, Arial, Helvetica;
+	font-size: 14px;
+	color: #404040;
+	padding: 5px 10px;
+	height: 70px;
+	border: 1px solid #dfdfdf;
+}
 </style>
 <script>
+var bodyLayout, dbTree, winF, popW; 
+var aLay, bLay, cLay;
+var bTabs, bTab1, bTab2, bTab3;
+var tableInfoGrid;
+var selectDatabase;
 
-var bodyLayout, aLay, dbTree, winF, popW; 
+
+function columnListCB(res){
+	if(res.list){
+		tableInfoGrid = bTabs.tabs("tableInfo").attachGrid();
+		var columns = res.list[0];
+		var headerStr = "";
+		var colTypeStr = "";
+		for(var key in columns){
+			if(key=="id") continue;
+			headerStr += key + ",";
+			colTypeStr += "ro,";
+		}
+		headerStr = headerStr.substr(0, headerStr.length-1);
+		colTypeStr = colTypeStr.substr(0, colTypeStr.length-1);
+        tableInfoGrid.setColumnIds(headerStr);
+		tableInfoGrid.setHeader(headerStr);
+		tableInfoGrid.setColTypes(colTypeStr);
+        tableInfoGrid.init();
+		tableInfoGrid.parse({data:res.list},"js");
+		console.log(res);
+	}
+}
 
 function connectionListCB(res){
-   dbTree = aLay.attachTreeView({
-       items: res.list
-   });
-   dbTree.attachEvent("onDblClick",function(id){
-	   var level =dbTree.getLevel(id);
-	   if(level==2){
-    	  var text = dbTree.getItemText(id);
-    	  var au = new AjaxUtil("${root}/connection/tables/"+text+"/"+id, null, "get");
-    	  au.send(tableListCB);
-      }
-   });
+	dbTree = aLay.attachTreeView({
+	    items: res.list
+	});
+	dbTree.attachEvent("onDblClick",function(id){
+		var level = dbTree.getLevel(id);
+		if(level==2){
+			var text = dbTree.getItemText(id);
+			selectDatabase = text;
+			var au = new AjaxUtil("${root}/connection/tables/" + text + "/" + id, null, "get");
+			au.send(tableListCB); 
+		}
+	});
+	dbTree.attachEvent("onClick",function(id){
+		var level = dbTree.getLevel(id);
+		if(level==3){
+			var pId= dbTree.getParentId(id);
+			var dbName = dbTree.getItemText(pId);
+			var tableName = dbTree.getUserData(id, "orgText");
+			var au = new AjaxUtil("${root}/connection/columns/" + dbName + "/" + tableName, null, "get");
+			au.send(columnListCB);
+		} 
+	});
 }
 
 function addConnectionCB(res){
@@ -47,34 +98,56 @@ function addConnectionCB(res){
 function tableListCB(res){
 	var parentId = res.parentId;
 	var i=1;
-	console.log(res.list);
 	for(var table of res.list){
 		var id = parentId + "_" + i++;
 		var text = table.tableName;
 		if(table.tableComment!=""){
 			text += "[" + table.tableComment + "]";
-			}
+		}
 		text += ":"+ table.tableSize + "KB"; 
 		dbTree.addItem(id, text, parentId);
-		}		
-	dbTree.openItem(parentId);
+		dbTree.setUserData(id,"orgText",table.tableName);
 	}
+	dbTree.openItem(parentId);
+}
 	
 function dbListCB(res){
-	   console.log(res.list);
-	   if(res.error){
-	      alert(res.error);
-	      return;
-	   }
-	   
-	   var parentId = res.parentId;
-	   for(var db of res.list){
-	      var id = db.id;
-	      var text = db.text;
-	      dbTree.addItem(id, text, parentId);
-	   }
-	   dbTree.openItem(parentId);
+	console.log(res);
+	if(res.error){
+		alert(res.error);
+		return;
 	}
+	var parentId = res.parentId;
+	for(var db of res.list){
+		var id = db.id;
+		var text = db.text;
+		dbTree.addItem(id, text, parentId);
+	}
+	dbTree.openItem(parentId);
+}
+
+function sqlRunCB(xhr,res){
+	res = JSON.parse(res);
+	if(res.result){
+		tableInfoGrid = cLay.attachGrid();
+		var columns = res.result[0];
+		var headerStr = "";
+		var colTypeStr = "";
+		for(var key in columns){
+			if(key=="id") continue;
+			headerStr += key + ",";
+			colTypeStr += "ro,";
+		}
+		headerStr = headerStr.substr(0, headerStr.length-1);
+		colTypeStr = colTypeStr.substr(0, colTypeStr.length-1);
+        tableInfoGrid.setColumnIds(headerStr);
+		tableInfoGrid.setHeader(headerStr);
+		tableInfoGrid.setColTypes(colTypeStr);
+        tableInfoGrid.init();
+		tableInfoGrid.parse({data:res.result},"js");
+		console.log(res);
+	}
+}
 
 dhtmlxEvent(window,"load",function(){
 	bodyLayout = new dhtmlXLayoutObject({
@@ -87,18 +160,19 @@ dhtmlxEvent(window,"load",function(){
 	             left: "auto"
 	      }
 	});
-   aLay = bodyLayout.cells("a");
-   aLay.setWidth(300);
-   aLay.setText("Connection Info List");
-   var aToolbar = aLay.attachToolbar();
-   aToolbar.addButton("addcon",1,"add Connector");
-   aToolbar.addButton("condb",2,"Connection");
-   aToolbar.attachEvent("onClick",function(id){
-      if(id=="condb"){
-         var rowId =dbTree.getSelectedId();
-         if(!rowId){
-            alert("접속할 커넥션을 선택해주세요.");
-            return;
+	bodyLayout.attachFooter("footDiv");
+	aLay = bodyLayout.cells("a");
+	aLay.setWidth(300);
+	aLay.setText("Connection Info List");
+	var aToolbar = aLay.attachToolbar();
+	aToolbar.addButton("addcon",1,"add Connector");
+	aToolbar.addButton("condb",2,"Connection");
+	aToolbar.attachEvent("onClick",function(id){
+		if(id=="condb"){
+			var rowId =dbTree.getSelectedId();
+			if(!rowId){
+			alert("접속할 커넥션을 선택해주세요.");
+			return;
          }
          var au = new AjaxUtil("${root}/connection/db_list/" + rowId, null, "get");
          au.send(dbListCB); 
@@ -109,13 +183,45 @@ dhtmlxEvent(window,"load",function(){
    
    var au = new AjaxUtil("${root}/connection/connector_list",null,"get");
    au.send(connectionListCB); 
-
-   winF = new dhtmlXWindows();
-   popW = winF.createWindow("win1",20,30,320,300);
-   //popW.hide(); 
-   popW.setText("Add Connection Info"); 
-   var formObj = [
-              {type:"settings", offsetTop:12,name:"connectionInfo",labelAlign:"left"},
+	
+   bLay = bodyLayout.cells("b");
+	bTabs = bLay.attachTabbar({
+		align:"left",
+		tabs:[
+			{id:"tableInfo", text:"Table Info"},
+			{id:"tableData", text:"Table Datas"},
+			{id:"sql", text:"Run Sql", active:true}
+		]
+	});
+	var sqlFormObj = [
+		{type: "block", blockOffset: 10, list: [
+			{type: "button", name:"runBtn", id:"runBtn", value: "실행"},
+			{type: "newcolumn"},
+			{type: "button", name:"resetBtn", id:"resetBtn", value: "취소"} 
+		]},
+		{type:"input",name:"sqlTa",label:"sql",required:true,rows:10,style:"background-color:#ecf3f9;border:1px solid #39c;width:800"},
+	];	
+	var sqlForm = bTabs.tabs("sql").attachForm(sqlFormObj);
+	
+	sqlForm.attachEvent("onButtonClick",function(id){
+		if(id=="runBtn"){
+			if(sqlForm.validate()){
+	            sqlForm.send("${root}/sql/run?database="+selectDatabase, "post", sqlRunCB);
+	         }
+      }else if(id=="resetBtn"){
+    	  sqlForm.clear();
+      }
+   })
+   
+	cLay = bodyLayout.cells("c");
+   
+   
+	winF = new dhtmlXWindows();
+	popW = winF.createWindow("win1",20,30,320,300);
+	//popW.hide(); 
+	popW.setText("Add Connection Info"); 
+	var formObj = [
+			{type:"settings", offsetTop:12,name:"connectionInfo",labelAlign:"left"},
             {type:"input",name:"ciName", label:"커넥션이름",required:true},
             {type:"input",name:"ciUrl", label:"접속URL",required:true},
             {type:"input",name:"ciPort", label:"PORT번호",validate:"ValidInteger",required:true},
@@ -142,9 +248,16 @@ dhtmlxEvent(window,"load",function(){
       }
    });
    
-})
+/*    $(window).unload(function() {
+		var au = new AjaxUtil("${root}/user/logout", null, "get");
+		au.send();
+   }); */
+  
+});
 </script>
 <body>
-
+	<div id="footDiv" class="my_ftr">
+		<div class="text">log</div>
+	</div>
 </body>
 </html>

@@ -35,7 +35,12 @@ public class UserInfoController {
 		}
 		return map;
 	}
-	
+
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public void logout(HttpSession hs){
+		log.info("menuList=>{}", hs.getAttribute("menuList"));
+		hs.invalidate();
+	}
 	@RequestMapping(value="/join", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> join(@RequestBody UserInfoVO ui){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -46,7 +51,6 @@ public class UserInfoController {
 			map.put("biz", true);
 			map.put("msg", "성공!");
 		}else if(result==2) {
-
 			map.put("msg", "아이디 중복!");
 		}
 		return map;

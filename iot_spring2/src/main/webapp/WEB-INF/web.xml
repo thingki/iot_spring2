@@ -47,5 +47,13 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-
+	<listener>
+		<description>sessionListener</description>
+		<listener-class>
+			com.iot.spring.common.listener.SessionListener
+		</listener-class>
+	</listener>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 </web-app>

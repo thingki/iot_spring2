@@ -38,13 +38,17 @@
 		or table_type='SYSTEM_VIEW')
 	</select>
 	
-	<select id="selectColumn" parameterType="string" resultType="cvo" >
-		select column_name as columnName, column_default as columnDefault,
-		is_nullable as isNullable,data_type as dataType,character_maximum_length as characterLength,
-		column_type as columnType,column_key as columnKey,column_comment as columnComment
-		from information_schema.columns
-		where table_schema=database()
-		and table_name=#{tableName}
-		order by ordinal_position
+	<!-- 테이블 정보 받아오기/콜룸정보 -->
+	<select id="selectColumn" resultType="cvo" parameterType="map">
+		select column_name as columnName
+		, data_type as dataType
+		, character_maximum_length as maxLength
+		, is_nullable as isNull
+		, @rNum:=@rNum+1 as id
+		from INFORMATION_SCHEMA.columns ,
+		(select @rNum:=0) tmp
+		where table_name=#{tableName}
+		and table_schema=#{dbName}
+		order by ordinal_position;
 	</select>
 </mapper>

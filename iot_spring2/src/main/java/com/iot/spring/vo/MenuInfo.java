@@ -1,6 +1,12 @@
 package com.iot.spring.vo;
 
-public class MenuInfo {
+import java.io.Serializable;
+
+public class MenuInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int mNum;
 	private String mName;
 	private String mUrl;

@@ -13,7 +13,7 @@ import com.iot.spring.dao.MenuInfoDAO;
 import com.iot.spring.vo.MenuInfo;
 
 @Repository
-public class selectMenuInfoDAOImpl implements MenuInfoDAO {
+public class MenuInfoDAOImpl implements MenuInfoDAO {
 	
 	@Autowired
 	@Qualifier("iot2ssf")

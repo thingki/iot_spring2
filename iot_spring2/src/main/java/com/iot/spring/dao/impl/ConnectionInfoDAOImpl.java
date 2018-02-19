@@ -3,6 +3,8 @@ package com.iot.spring.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.iot.spring.dao.ConnectionInfoDAO;
+import com.iot.spring.vo.ColumnVO;
 import com.iot.spring.vo.ConnectionInfoVO;
+import com.iot.spring.vo.TableVO;
 
 @Repository
 public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
@@ -42,6 +46,19 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 	public int insertDbConnection(ConnectionInfoVO ci) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public List<TableVO> selectTableList(SqlSession ss, String dbName) {
+		List<TableVO> result = null;
+		result=ss.selectList("connection_info.selectTable", dbName);
+		return result;
+	}
+	
+	@Override
+	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, String> pMap) {
+		List<ColumnVO> result = null;
+		result=ss.selectList("connection_info.selectColumn", pMap);
+		return result;
 	}
 
 

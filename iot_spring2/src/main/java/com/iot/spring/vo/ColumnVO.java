@@ -1,19 +1,16 @@
 package com.iot.spring.vo;
 
 public class ColumnVO {
+	private String id;
 	private String columnName;
-	private String columnDefault;
-	private String isNullable;
 	private String dataType;
-	private int characterLength;
-	private String columnType;
-	private String columnKey;
-	private String columnComment;
-	@Override
-	public String toString() {
-		return "ColumnVO [columnName=" + columnName + ", columnDefault=" + columnDefault + ", isNullable=" + isNullable
-				+ ", dataType=" + dataType + ", characterLength=" + characterLength + ", columnType=" + columnType
-				+ ", columnKey=" + columnKey + ", columnComment=" + columnComment + "]";
+	private int maxLength;
+	private String isNull;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getColumnName() {
 		return columnName;
@@ -21,46 +18,29 @@ public class ColumnVO {
 	public void setColumnName(String columnName) {
 		this.columnName = columnName;
 	}
-	public String getColumnDefault() {
-		return columnDefault;
-	}
-	public void setColumnDefault(String columnDefault) {
-		this.columnDefault = columnDefault;
-	}
-	public String getIsNullable() {
-		return isNullable;
-	}
-	public void setIsNullable(String isNullable) {
-		this.isNullable = isNullable;
-	}
 	public String getDataType() {
 		return dataType;
 	}
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	public int getCharacterLength() {
-		return characterLength;
+	public int getMaxLength() {
+		return maxLength;
 	}
-	public void setCharacterLength(int characterLength) {
-		this.characterLength = characterLength;
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
 	}
-	public String getColumnType() {
-		return columnType;
+	public String getIsNull() {
+		return isNull;
 	}
-	public void setColumnType(String columnType) {
-		this.columnType = columnType;
+	public void setIsNull(String isNull) {
+		this.isNull = isNull;
 	}
-	public String getColumnKey() {
-		return columnKey;
+	@Override
+	public String toString() {
+		return "ColumnVO [id=" + id + ", columnName=" + columnName + ", dataType=" + dataType + ", maxLength="
+				+ maxLength + ", isNull=" + isNull + "]";
 	}
-	public void setColumnKey(String columnKey) {
-		this.columnKey = columnKey;
-	}
-	public String getColumnComment() {
-		return columnComment;
-	}
-	public void setColumnComment(String columnComment) {
-		this.columnComment = columnComment;
-	}
+	
+	
 }

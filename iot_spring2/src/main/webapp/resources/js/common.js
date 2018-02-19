@@ -71,7 +71,7 @@ var AjaxUtilDx = function (url, dxObj, type, dataType){
        ,   data     : this.param
        ,   success : this.callbackSuccess
        ,   error : function(xhr, status, e) {
-             alert("에러 : "+e);
+             alert("에러 : "+e, xhr, status);
       },
       done : function(e) {
       }

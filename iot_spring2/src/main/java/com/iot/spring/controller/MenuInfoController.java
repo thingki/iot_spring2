@@ -26,10 +26,8 @@ public class MenuInfoController {
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getMenuInfoList(Map<String,Object> map, HttpSession hs){
-		List<MenuInfo> list = mis.getMenuInfoList();
+		List<MenuInfo> list = mis.getMenuInfoList(); 
 		hs.setAttribute("menuList", list);
-		
-		log.info("menu=>{}", list);
 		return map;
 	}
 }

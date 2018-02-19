@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import com.iot.spring.common.dbcon.DBConnector;
 import com.iot.spring.dao.ConnectionInfoDAO;
 import com.iot.spring.service.ConnectionInfoService;
+import com.iot.spring.vo.ColumnVO;
 import com.iot.spring.vo.ConnectionInfoVO;
+import com.iot.spring.vo.TableVO;
 
 @Service
 public class ConnectionInfoServiceImpl implements ConnectionInfoService{
@@ -53,5 +55,15 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 		return dbList;
 	}
 
-	
+	@Override
+	public List<TableVO> getTableList(HttpSession hs, String dbName) {
+		SqlSession ss = (SqlSession)hs.getAttribute("sqlSession");
+	     return cidao.selectTableList(ss, dbName);
+	}
+
+	@Override
+	public List<ColumnVO> getColumnList(HttpSession hs, Map<String, String> pMap) {
+		SqlSession ss = (SqlSession)hs.getAttribute("sqlSession");
+		return cidao.selectColumnList(ss, pMap);
+	}	
 }

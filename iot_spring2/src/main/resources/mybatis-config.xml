@@ -13,14 +13,16 @@
 		<typeAlias type="com.iot.spring.vo.MenuInfo" alias="menu" />
 		<typeAlias type="com.iot.spring.vo.ConnectionInfoVO" alias="ci" />
 		<typeAlias type="com.iot.spring.vo.TableVO" alias="tvo" />
-		<typeAlias type="com.iot.spring.vo.ColumnVO" alias="cvo" /> 
+		<typeAlias type="com.iot.spring.vo.ColumnVO" alias="cvo" />
+		<typeAlias type="com.iot.spring.vo.SqlVO" alias="sql" />  
 		<!-- <typeAlias type="com.iot.spring.vo.Emp" alias="emp" />
 		-->
 	</typeAliases>
 	<mappers>
 		<mapper resource="sql/user_info.xml" />
-		<mapper resource="sql/menu.xml" />
-		<mapper resource="sql/connection.xml" /> 
+		<mapper resource="sql/menu_info.xml" />
+		<mapper resource="sql/connection_info.xml" />
+		<mapper resource="sql/sql_info.xml" />  
 		<!-- 
 		<mapper resource="sql/emp.xml" />
 		-->

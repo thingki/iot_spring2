@@ -31,28 +31,17 @@
 <!-- Firefox, Opera (Chrome and Safari say thanks but no thanks) -->
 <link rel="icon" href="${rPath}/imgs/favicon.png">
 
-
-<%   
-String uri = request.getRequestURI();
-int idx = uri.lastIndexOf(".");
-if (idx != -1) {
-	uri = uri.substring(8, idx);
-}
-%>
-
 <script>
 $(document).ready(function(){
-	if(<%= session.getAttribute("menuList") %>==null){
-		function menuListCB(res){
-			   console.log(res.list);
+	if("<%=session.getAttribute("menuList")%>"=="null"){
+			function menuListCB(res){
+			   console.log(res.menuList);
+			   location.reload();
 			}
 			var au = new AjaxUtil("${root}/menu/list/", null, "get");
 			au.send(menuListCB);
 	}
-		
-		
-	   $("li a[href='<%=uri%>']").parent().attr("class", "active");
-	})
+})
 </script>
 
 
