@@ -3,8 +3,6 @@ package com.iot.spring.dao.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,7 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 	@Override
 	public List<ConnectionInfoVO> selectConnectionInfo(ConnectionInfoVO ci) {
 		SqlSession ss = ssf.openSession();
+		ss.selectList("connection_info.makeRowNum");
 		List<ConnectionInfoVO> cilist = ss.selectList("connection_info.selectConncetionInfo", ci);
 		ss.close();
 		return cilist;
@@ -42,11 +41,13 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 		return ss.selectList("connection_info.selectDatabase");
 	}
 	
+	//커넥션 추가하기!
 	@Override
 	public int insertDbConnection(ConnectionInfoVO ci) {
-		// TODO Auto-generated method stub
-		return 0;
+		SqlSession ss = ssf.openSession();
+		return ss.update("connection_info.insertConncetionInfo", ci);
 	}
+	
 	@Override
 	public List<TableVO> selectTableList(SqlSession ss, String dbName) {
 		List<TableVO> result = null;
@@ -55,9 +56,14 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 	}
 	
 	@Override
-	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, String> pMap) {
-		List<ColumnVO> result = null;
-		result=ss.selectList("connection_info.selectColumn", pMap);
+	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, Object> pMap) {
+		List<ColumnVO> result = ss.selectList("connection_info.selectColumn", pMap);
+		return result;
+	}
+	@Override
+	public List<Map<String, Object>> selectAlldataInfo(SqlSession ss, Map<String, Object> pMap) {
+		ss.selectList("connection_info.useDatabase", pMap);
+		List<Map<String, Object>> result = ss.selectList("connection_info.selectAllTableData", pMap);
 		return result;
 	}
 

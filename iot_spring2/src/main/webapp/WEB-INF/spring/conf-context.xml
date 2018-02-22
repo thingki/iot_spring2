@@ -38,7 +38,7 @@
 		<property name="clientId" value="_aI5AdwVTquBGWSnZZ_1"/>
 		<property name="clientSecret" value="KrE2rnijIn"/>
 		<property name="source" value="en"/>
-		<property name="target" value="kr"/>	
+		<property name="target" value="ko"/>
 	</bean>
 	
 </beans>

@@ -3,8 +3,6 @@ package com.iot.spring.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 
 import com.iot.spring.vo.ColumnVO;
@@ -22,5 +20,6 @@ public interface ConnectionInfoDAO {
 	
 	public List<TableVO> selectTableList(SqlSession ss, String dbName); //테이블 리스트를 받아옴
 	
-	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, String> pMap);
+	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, Object> pMap); //테이블을 클릭했을 때 테이블 정보와 데이터를 받아옴
+	public List<Map<String, Object>> selectAlldataInfo(SqlSession ss, Map<String, Object> pMap);
 }

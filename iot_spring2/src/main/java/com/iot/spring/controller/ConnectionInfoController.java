@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.iot.spring.service.ConnectionInfoService;
-import com.iot.spring.vo.ColumnVO;
 import com.iot.spring.vo.ConnectionInfoVO;
 import com.iot.spring.vo.TableVO;
 import com.iot.spring.vo.UserInfoVO;
@@ -34,10 +33,11 @@ public class ConnectionInfoController {
 	@RequestMapping("/connector_list")
 	public @ResponseBody Map<String, Object> getConnectionList(HttpSession hs, Map<String, Object> map){
 		UserInfoVO ui = new UserInfoVO();
-		if(hs.getAttribute("user")!=null) { 
-			ui.setuId((String) hs.getAttribute("user"));
+		if(hs.getAttribute("userId")!=null) { 
+			ui.setuId((String) hs.getAttribute("userId"));
 		}else {
-			ui.setuId("bbak");
+			//ui.setuId("bbak");
+			map.put("msg", "로그인을 다시 하세요");
 		}
 		ConnectionInfoVO ci = new ConnectionInfoVO();
 		ci.setuId(ui.getuId());
@@ -50,6 +50,7 @@ public class ConnectionInfoController {
 	public @ResponseBody Map<String, Object> getDatabaseList(@PathVariable("ciNo") int ciNo,
 			Map<String, Object> map, HttpSession hs) {
 		List<Map<String, Object>> dbList;
+		log.info("뭐가 오나=>{}", map);
 		try {
 			dbList = cis.getDatabaseList(ciNo, hs);
 			map.put("list", dbList);
@@ -78,16 +79,21 @@ public class ConnectionInfoController {
 			@PathVariable("tableName") String tableName,
 			HttpSession hs,
 			Map<String, Object> map){
-		Map<String, String> pMap = new HashMap<String, String>();
+		Map<String, Object> pMap = new HashMap<String, Object>();
 		pMap.put("dbName", dbName);
 		pMap.put("tableName", tableName);
-		List<ColumnVO> columnList = cis.getColumnList(hs, pMap);
-		map.put("list", columnList);
+		
+		cis.getColumnList(hs, pMap, map);
 		return map;
 	}
 	
-	@RequestMapping("/insert")
-	public @ResponseBody Map<String, Object> insertDbConnection(HttpSession hs, Map<String, Object> map){
+	@RequestMapping(value="/insert", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> insertConnectionInfo(@Valid ConnectionInfoVO ci,  HttpSession hs) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		ci.setuId((String)hs.getAttribute("userId"));
+		log.info("ci=>{}",ci);
+		cis.insertDbConnection(map, ci);
+		log.info("map=>{}",map.get("msg")); 
 		return map;
 	}
 	

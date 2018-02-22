@@ -16,6 +16,7 @@ public class ConnectionInfoVO {
 	private int id;
 	private String text;
 	private Object[] items;
+	private int idx;
 	
 	public int getCiNo() {
 		return ciNo;
@@ -89,12 +90,22 @@ public class ConnectionInfoVO {
 	public void setItems(Object[] items) {
 		this.items = items;
 	}
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
 	@Override
 	public String toString() {
 		return "ConnectionInfoVO [ciNo=" + ciNo + ", ciName=" + ciName + ", ciUrl=" + ciUrl + ", ciPort=" + ciPort
 				+ ", ciDatabase=" + ciDatabase + ", ciUser=" + ciUser + ", ciPwd=" + ciPwd + ", ciEtc=" + ciEtc
-				+ ", uId=" + uId + ", id=" + id + ", text=" + text + ", items=" + Arrays.toString(items) + "]";
+				+ ", uId=" + uId + ", id=" + id + ", text=" + text + ", items=" + Arrays.toString(items) + ", idx="
+				+ idx + "]";
 	}
+
+
+	
 		
 	
 }

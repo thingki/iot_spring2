@@ -24,7 +24,7 @@ public class UrlController {
 		String url=req.getRequestURI();
 		String rootPath = req.getContextPath();
 		url=getUrl(url, rootPath);
-		log.info("path=>{}", url);
+		log.info("url=>{}", url);
 		mav.setViewName(url);
 		return mav;
 	}

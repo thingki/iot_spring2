@@ -3,12 +3,17 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="connection_info">
-	<select id="selectConncetionInfo" parameterType="ci" resultType="ci">
+	<select id="selectConncetionInfo" parameterType="ci" resultType="ci">	
 		select ciNo, ciName, ciUrl, ciPort, ciDatabase, ciUser, ciPwd, ciEtc, uId,
+		(@row_num:=@row_num + 1) as idx,
 		ciNo as id,
 		ciName as text
 		from connection_info
 		where uId=#{uId}
+	</select>
+	
+	<select id="makeRowNum">
+		set @row_num = 0;
 	</select>
 	
 	<select id="selectConncetionInfoWithCiNo" parameterType="int" resultType="ci">
@@ -19,6 +24,7 @@
 		where ciNo=#{ciNo}
 	</select>
 	
+	<!-- 커넥션 추가하기 -->
 	<select id="insertConncetionInfo" parameterType="ci" resultType="int" >
 		insert into connection_info(ciUrl, ciName, uId, ciPort, ciDatabase, ciUser, ciPwd, ciEtc)
 		values(#{ciUrl}, #{ciName}, #{uId}, #{ciPort}, #{ciDatabase}, #{ciUser}, #{ciPwd}, #{ciEtc})
@@ -35,20 +41,28 @@
 		information_schema.tables
 		where table_schema=#{dbName}
 		and (table_type='BASE TABLE' 
-		or table_type='SYSTEM_VIEW')
+		or table_type='SYSTEM VIEW')
 	</select>
 	
-	<!-- 테이블 정보 받아오기/콜룸정보 -->
+	<!-- 테이블 정보 받아오기/콜룸정보,테이블 데이터 -->
 	<select id="selectColumn" resultType="cvo" parameterType="map">
 		select column_name as columnName
 		, data_type as dataType
 		, character_maximum_length as maxLength
 		, is_nullable as isNull
 		, @rNum:=@rNum+1 as id
-		from INFORMATION_SCHEMA.columns ,
+		from INFORMATION_SCHEMA.columns,
 		(select @rNum:=0) tmp
 		where table_name=#{tableName}
 		and table_schema=#{dbName}
-		order by ordinal_position;
+		order by ordinal_position
+	</select>
+	
+	<select id="selectAllTableData" parameterType="map" resultType="map">
+		select * from ${tableName}
+	</select>
+	
+	<select id="useDatabase" parameterType="map">
+	use ${dbName}
 	</select>
 </mapper>

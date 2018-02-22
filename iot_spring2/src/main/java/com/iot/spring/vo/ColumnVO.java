@@ -4,7 +4,7 @@ public class ColumnVO {
 	private String id;
 	private String columnName;
 	private String dataType;
-	private int maxLength;
+	private double maxLength;
 	private String isNull;
 	public String getId() {
 		return id;
@@ -24,10 +24,10 @@ public class ColumnVO {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	public int getMaxLength() {
+	public double getMaxLength() {
 		return maxLength;
 	}
-	public void setMaxLength(int maxLength) {
+	public void setMaxLength(double maxLength) {
 		this.maxLength = maxLength;
 	}
 	public String getIsNull() {
@@ -41,6 +41,5 @@ public class ColumnVO {
 		return "ColumnVO [id=" + id + ", columnName=" + columnName + ", dataType=" + dataType + ", maxLength="
 				+ maxLength + ", isNull=" + isNull + "]";
 	}
-	
 	
 }

@@ -7,29 +7,18 @@
 <title>Login</title>
 </head>
 <script>
-
    var winF,popW;
    $(document).ready(function(){
       winF = new dhtmlXWindows();
       winF.setSkin("dhx_skyblue");
-      winF.attachViewportTo("winVP");
-
-
-      
       popW = winF.createWindow("win1", "center", "center", 320, 300);
-      
-      //popW.hide(); 
       popW.button("close").hide();
       popW.button("minmax").hide();
       popW.button("park").hide();
       winF.window("win1").centerOnScreen();
       winF.window("win1").denyMove();
       winF.window("win1").denyResize();
-      
       popW.setText("Login"); 
-
-
-      
       var formObj = [
                  {type:"settings", offsetTop:12,name:"login",labelAlign:"left"},
 	               {type:"input",name:"uId", label:"아이디 : ",required:true},
@@ -37,29 +26,24 @@
 	               {type: "block", blockOffset: 0, list: [
 	                  {type: "button", name:"loginBtn",value: "로그인"},
 	                  {type: "newcolumn"},
-	                  {type: "button", name:"cancelBtn",value: "취소"},
+	                  {type: "button", name:"cancelBtn",value: "닫기"},
 	                  {type: "newcolumn"},
 	                  {type: "button", name:"joinBtn",value: "회원가입"}
                ]}
          ];
-      
       var form = popW.attachForm(formObj,true);
-      
       form.attachEvent("onButtonClick",function(id){
          if(id=="loginBtn"){
             if(form.validate()){
                form.send("${root}/user/login", "post", callback);
             }
          }else if(id=="cancelBtn"){
-            form.clear();
+        	 popW.hide(); 
          }else if(id=="joinBtn"){
             location.href="${pPath}/user/join";
          }
       });
-      
-     
    });
-   
    function callback(loader, res){
       if(loader.xmlDoc.status == 200){
          var res = JSON.parse(res);
@@ -71,9 +55,7 @@
          console.log(res);
       }
    }
-   
 </script>
 <body>
-   <div id="winVP"></div>
 </body>
 </html>

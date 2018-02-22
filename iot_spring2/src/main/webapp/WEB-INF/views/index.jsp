@@ -14,6 +14,6 @@
  } */
 </script>
 <body>
-<a href="${pPath}/user/login"><button  id="goLogin" type="button">로그인</button></a>
+
 </body>
 </html>

@@ -6,22 +6,22 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iot.spring.common.dbcon.DBConnector;
 import com.iot.spring.dao.ConnectionInfoDAO;
 import com.iot.spring.service.ConnectionInfoService;
-import com.iot.spring.vo.ColumnVO;
 import com.iot.spring.vo.ConnectionInfoVO;
 import com.iot.spring.vo.TableVO;
 
 @Service
 public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 	
-	private static final Logger log = LoggerFactory.getLogger(ConnectionInfoServiceImpl.class);
+	//private static final Logger log = LoggerFactory.getLogger(ConnectionInfoServiceImpl.class);
+	
 	@Autowired
 	private ConnectionInfoDAO cidao;
 	
@@ -29,11 +29,13 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 	public List<ConnectionInfoVO> getConnectionInfo(ConnectionInfoVO ci) {
 		return cidao.selectConnectionInfo(ci);
 	}
-
+	//커넥션 추가하기
 	@Override
-	public boolean insertDbConnection(ConnectionInfoVO ci) {
-		// TODO Auto-generated method stub
-		return false;
+	public void insertDbConnection(Map<String,Object> map, ConnectionInfoVO ci) {
+		map.put("msg", "Connector Insert unsuccessful");
+		if(cidao.insertDbConnection(ci)==1) {
+			map.put("msg", "Connector Insert successful");
+		};
 	}
 
 	@Override
@@ -51,6 +53,7 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 			dbMap.put("id", ciNo + "_" + (++idx));
 			dbMap.put("text", dbMap.get("Database"));	
 			dbMap.put("items", new Object[] {});
+			dbMap.put("idx", idx);
 		}	
 		return dbList;
 	}
@@ -62,8 +65,9 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 	}
 
 	@Override
-	public List<ColumnVO> getColumnList(HttpSession hs, Map<String, String> pMap) {
+	public void getColumnList(HttpSession hs, Map<String, Object> pMap, Map<String, Object> map) {
 		SqlSession ss = (SqlSession)hs.getAttribute("sqlSession");
-		return cidao.selectColumnList(ss, pMap);
+		map.put("list", cidao.selectColumnList(ss, pMap));
+		map.put("tableDatas", cidao.selectAlldataInfo(ss, pMap));
 	}	
 }

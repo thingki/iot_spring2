@@ -72,20 +72,22 @@ body {
 
 /* 아이콘 부분 */
 #container #dock {
-	width: 100%;
+	width: 90%;
 	text-align: center;
 	margin: 0 auto;
 }
+
 
 #container {
 	position: fixed;
 	bottom: 0;
 	text-align: center;
 	right: 20%;
-	left: 10%;
-	width: 79%;
+	left: 15%;
+	width: 70%;
 	background: rgba(255, 255, 255, 0.2);
 	border-radius: 10px 10px 0 0;
+	z-index: 10;
 }
 
 #container li {
@@ -129,7 +131,6 @@ body {
 	display: block;
 	color: #fff;
 }
-
 
 @keyframes animStar {
   from {

@@ -117,6 +117,7 @@ function dbListCB(res){
 	}
 	dbTree.openItem(parentId);
 }
+
 dhtmlxEvent(window,"load",function(){
 	bodyLayout = new dhtmlXLayoutObject(document.body,"3L");
 	bodyLayout.attachFooter("footDiv");

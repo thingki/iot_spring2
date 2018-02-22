@@ -176,3 +176,10 @@ function returnSession(result){
    alert("설정되었습니다.");
    pageMove(url);
 }
+
+function msgLog(res){
+	for(var sql of res.msg){
+		$("#resultMsg").append("<br><em><b>"+sql+"</b></em>");
+	}
+	$("#resultMsg").scrollTop($("#resultMsg")[0].scrollHeight);
+}

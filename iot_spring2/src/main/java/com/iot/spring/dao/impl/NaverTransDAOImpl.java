@@ -39,15 +39,11 @@ public class NaverTransDAOImpl implements NaverTransDAO{
 	public void setTarget(String target) {
 		this.target = target;
 	}
-	
 	public String getText(String text) throws IOException {
-		
 		HttpURLConnection con = null;
         BufferedReader br = null;
 		try {
-
 	            text = URLEncoder.encode(text, "UTF-8");
-	            
 	            URL url = new URL(this.url);
 	            con = (HttpURLConnection)url.openConnection();
 	            con.setRequestMethod("POST");
@@ -86,5 +82,4 @@ public class NaverTransDAOImpl implements NaverTransDAO{
 	        }
 		return "";
 	}
-	
 }

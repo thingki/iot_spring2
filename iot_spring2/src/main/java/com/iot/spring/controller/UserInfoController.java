@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.iot.spring.service.UserInfoService;
 import com.iot.spring.vo.UserInfoVO;
@@ -23,23 +24,24 @@ public class UserInfoController {
 	
 	@Autowired
 	private UserInfoService uis;
-	
 	private static final Logger log = LoggerFactory.getLogger(UserInfoController.class);
-	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> login(UserInfoVO ui, HttpSession hs){
 		Map<String, Object> map = new HashMap<String, Object>();
 		log.info("ui=>{}", ui);
 		if(uis.login(ui, map)) {
-			hs.setAttribute("user", map.get("user"));
+			hs.setAttribute("userId", map.get("userId"));
 		}
 		return map;
 	}
-
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public void logout(HttpSession hs){
+	public ModelAndView logout(HttpSession hs, ModelAndView mav){
 		log.info("menuList=>{}", hs.getAttribute("menuList"));
-		hs.invalidate();
+		if(hs.getAttribute("userId")!=null) {
+			hs.invalidate();	
+		}
+		mav.setViewName("index");
+		return mav;
 	}
 	@RequestMapping(value="/join", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> join(@RequestBody UserInfoVO ui){
