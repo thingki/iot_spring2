@@ -92,6 +92,7 @@ function sqlRunCB(xhr,res){
 	}
 	cTabs.tabs("result1").setActive(true);
 	msgLog(res);
+	
 	/* use를 사용하면 해당 데이터베이스가 선택되게 하기!
 	var used = ${useDatabase};
 	if(used!=null){
@@ -148,7 +149,7 @@ dhtmlxEvent(window,"load",function(){
 	      offsets:{
 	             top: "auto",
 	             right: "auto",
-	             bottom: 90,
+	             bottom: 105,
 	             left: "auto"
 	      }
 	});
@@ -173,6 +174,7 @@ dhtmlxEvent(window,"load",function(){
    })
 	var au = new AjaxUtil("${root}/connection/connector_list",null,"get");
 	au.send(connectionListCB); 
+	
 	bLay = bodyLayout.cells("b");
  	bTabs = bLay.attachTabbar({
 		align:"left",
@@ -189,7 +191,8 @@ dhtmlxEvent(window,"load",function(){
 			{type: "button", name:"resetBtn", id:"resetBtn", value: "취소"} 
 		]},
 		{type:"label",name:"label", label:"", list:[
-			{type:"input",name:"sqlTa",label:"",required:true,rows:12,style:"border:1px solid #39c"}
+			{type:"input",name:"sqlTa",label:"",required:true,
+				rows:12,style:"border:1px solid #39c"}
 			]}
 		];	
 	var sqlForm = bTabs.tabs("sql").attachForm(sqlFormObj);
@@ -204,7 +207,8 @@ dhtmlxEvent(window,"load",function(){
 	sqlForm.attachEvent("onButtonClick",function(id){
 		if(id=="runBtn"){
 			if(sqlForm.validate()){
-	            sqlForm.send("${root}/sql/run?selectDatabase="+selectDatabase, "post", sqlRunCB);
+	            sqlForm.send("${root}/sql/run?selectDatabase="+selectDatabase,
+	            		"post", sqlRunCB);
 	         }
       }else if(id=="resetBtn"){
     	  sqlForm.clear();
@@ -221,6 +225,7 @@ dhtmlxEvent(window,"load",function(){
     winF.window("win1").denyMove();
     winF.window("win1").denyResize();  
 	var formObj = [
+		{type:"label",name:"label", label:"", list:[
 			{type:"settings", offsetTop:12,name:"connectionInfo",labelAlign:"left"},
             {type:"input",name:"ciName", label:"커넥션이름",required:true},
             {type:"input",name:"ciUrl", label:"접속URL",required:true},
@@ -236,6 +241,7 @@ dhtmlxEvent(window,"load",function(){
                {type: "newcolumn"},
                {type: "button", name:"cancelBtn",value: "닫기"}
             ]}
+		]}
       ];
    var form = popW.attachForm(formObj,true);
    //form.setItemValue("ciUrl", "!@#"); 이거 응용해서 데이터 넣기!!
@@ -272,7 +278,10 @@ function connectionListCB(res){
 	dbTree = aLay.attachTreeView({
 	items: res.list
 	});
-		dbTree.attachEvent("onDblClick",function(id){
+	
+	
+	
+	dbTree.attachEvent("onDblClick",function(id){
 		var level = dbTree.getLevel(id);
 		if(level==2){
 			var text = dbTree.getItemText(id);
@@ -291,7 +300,7 @@ function connectionListCB(res){
 			au.send(columnListCB);
 		}else if(level==1){
 				console.log(userDatabaseInfo);
-			   //세션관리자 창 만듬
+			   //세션관리자 창
 			   winDB = new dhtmlXWindows();
 			   popDB = winDB.createWindow("win2",20,30,320,450);
 			   popDB.setText("Session Manager"); 
@@ -320,7 +329,6 @@ function connectionListCB(res){
 			           ]}
 			     ];
 			   var formDB = popDB.attachForm(formDBObj,true);
-			   /* formDB.setItemValue("ciName", dbTree.items[id].text); */
 			   popDB.hide();
 			   
 			   formDB.attachEvent("onButtonClick",function(id){

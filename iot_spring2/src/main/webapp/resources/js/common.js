@@ -10,11 +10,9 @@ function pageMove(param){
       alert("url을 입력해주세요.");
    }
 }
-
 function urlSubmit(f){
    return true;
 }
-
 var AjaxUtilDx = function (url, dxObj, type, dataType){
    if(!url){
       alert("url정보가 없습니다.");
@@ -50,11 +48,9 @@ var AjaxUtilDx = function (url, dxObj, type, dataType){
            pageMove(url);
        }
    }
-   
    this.setCallbackSuccess = function(callback){
       this.callbackSuccess = callback;
    }
-   
    this.send = function(callback){
       if(callback){
          this.callbackSuccess = callback;
@@ -84,7 +80,6 @@ var AjaxUtil = function (url, params, type, dataType){
       return null;
    }
    this.url = url;
-   
    var initData = {}   
    this.param = JSON.stringify(initData);
    if(params){
@@ -117,11 +112,9 @@ var AjaxUtil = function (url, params, type, dataType){
            pageMove(url);
        }
    }
-   
    this.setCallbackSuccess = function(callback){
       this.callbackSuccess = callback;
-   }
-   
+   } 
    this.send = function(callback){
       if(callback){
          this.callbackSuccess = callback;         
@@ -144,7 +137,6 @@ var AjaxUtil = function (url, params, type, dataType){
       });
    }
 }
-
 
 function mdel(mid){
    if(confirm("삭제하시겠습니까?")){

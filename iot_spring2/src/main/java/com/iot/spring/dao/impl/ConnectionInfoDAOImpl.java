@@ -54,7 +54,6 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 		result=ss.selectList("connection_info.selectTable", dbName);
 		return result;
 	}
-	
 	@Override
 	public List<ColumnVO> selectColumnList(SqlSession ss, Map<String, Object> pMap) {
 		List<ColumnVO> result = ss.selectList("connection_info.selectColumn", pMap);

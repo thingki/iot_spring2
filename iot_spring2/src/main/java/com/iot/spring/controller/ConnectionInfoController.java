@@ -31,12 +31,12 @@ public class ConnectionInfoController {
 	private static final Logger log = LoggerFactory.getLogger(ConnectionInfoService.class);
 	
 	@RequestMapping("/connector_list")
-	public @ResponseBody Map<String, Object> getConnectionList(HttpSession hs, Map<String, Object> map){
+	public @ResponseBody Map<String, Object> getConnectionList(
+			HttpSession hs, Map<String, Object> map){
 		UserInfoVO ui = new UserInfoVO();
 		if(hs.getAttribute("userId")!=null) { 
 			ui.setuId((String) hs.getAttribute("userId"));
 		}else {
-			//ui.setuId("bbak");
 			map.put("msg", "로그인을 다시 하세요");
 		}
 		ConnectionInfoVO ci = new ConnectionInfoVO();
@@ -50,7 +50,6 @@ public class ConnectionInfoController {
 	public @ResponseBody Map<String, Object> getDatabaseList(@PathVariable("ciNo") int ciNo,
 			Map<String, Object> map, HttpSession hs) {
 		List<Map<String, Object>> dbList;
-		log.info("뭐가 오나=>{}", map);
 		try {
 			dbList = cis.getDatabaseList(ciNo, hs);
 			map.put("list", dbList);
@@ -59,8 +58,7 @@ public class ConnectionInfoController {
 			map.put("error", e.getMessage());	
 		}
 		return map;
-	}	
-	
+	}
 	@RequestMapping(value="/tables/{dbName}/{parentId}", method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getTableList(
 			@PathVariable("dbName")String dbName, 
@@ -72,7 +70,6 @@ public class ConnectionInfoController {
 		map.put("parentId", parentId);
 		return map;
 	}
-	
 	@RequestMapping(value="/columns/{dbName}/{tableName}", method=RequestMethod.GET)
 	public @ResponseBody Map<String, Object> getColumnList(
 			@PathVariable("dbName") String dbName,
@@ -86,7 +83,6 @@ public class ConnectionInfoController {
 		cis.getColumnList(hs, pMap, map);
 		return map;
 	}
-	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> insertConnectionInfo(@Valid ConnectionInfoVO ci,  HttpSession hs) {
 		Map<String,Object> map = new HashMap<String,Object>();

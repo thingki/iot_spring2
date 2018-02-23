@@ -17,9 +17,13 @@
 <link rel="stylesheet" type="text/css" href="${dPath}/dhtmlx.css${ver}"/>
 <link rel="stylesheet" type="text/css" href="${rPath}/css/common.css${ver}"/>
 <link rel="stylesheet" type="text/css" href="${rPath}/css/headerandbody.css${ver}"/>
+<link rel="stylesheet" type="text/css" href="${rPath}/css/helloworld.css${ver}"/>
+
+<link rel="stylesheet" type="text/css" href="${rPath}/css/deadline.css${ver}"/>
 <script src="${rPath}/js/jquery.min.js${ver}" charset="utf-8"></script>
 <script src="${rPath}/js/common.js${ver}"></script>
 <script src="${dPath}/dhtmlx.js${ver}" charset="utf-8"></script>
+<script src="${dPath}/deadline.js${ver}" ></script>
 <!-- Chrome, Safari, IE -->
 <link rel="shortcut icon" href="${rPath}/imgs/favicon.png">
 <!-- Firefox, Opera (Chrome and Safari say thanks but no thanks) -->
@@ -37,6 +41,29 @@ $(document).ready(function(){
 })
 </script>
 <body>
+<header>
+<div class="content">
+  <div class="content__container">
+    <p class="content__container__text">
+      Hello
+    </p>
+    <ul class="content__container__list">
+      <li class="content__container__list__item">world !</li>
+      <li class="content__container__list__item">JAVA BASE IOT!</li>
+      <li class="content__container__list__item">
+      <c:choose>
+	       <c:when test="${userId != null}">
+	       ${userId}
+	       </c:when>
+	       <c:when test="${userId == null}">
+	       user
+	       </c:when>
+	  </c:choose>
+      <li class="content__container__list__item">everybody !</li>
+    </ul>
+  </div>
+</div>
+</header>
 <div class="night">
   <div class="stars">
     <div id='star1'></div>
@@ -44,7 +71,6 @@ $(document).ready(function(){
     <div id='star3'></div>
   </div>
 </div>
-
 <div class="logo-d">
 		<!-- 메인가운데 화면<img src="https://blog.codepen.io/wp-content/uploads/2012/06/codepen-wordmark-display-inside-white@10x.png" alt=""> -->
 	</div>
@@ -78,8 +104,3 @@ $(document).ready(function(){
     </div>
   </div>
 </body>
-
-
-
-
-

@@ -35,9 +35,7 @@ public class SqlRunController {
 			@RequestParam Map<String,Object> map, 
 			HttpSession hs
 			){
-		
 		double timeDuration = System.currentTimeMillis();
-		//log.info("***test***=>{}", (String)map.get("selectDatabase"));	
 		String sqlStr = (String) map.get("sqlTa");
 		String[] sqls = sqlStr.trim().split(";");
 		List<Object> list = new ArrayList<Object>();
@@ -53,7 +51,7 @@ public class SqlRunController {
 			queries++;
 			if(sql.indexOf("use")==0) {
 				sqlvo.setSqlTa(sql);
-				hs.removeAttribute("useDatabase"); // use 를 사용한 경우 선택된 데이터베이스값을 바꿈
+				hs.removeAttribute("useDatabase"); 
 				sqlService.useDatabaseSql(sqlvo, map, hs);
 			}else if(sql.indexOf("select")==0){
 				sqlvo.setSqlTa(sql);

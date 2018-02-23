@@ -16,7 +16,7 @@
       popW.button("close").hide();
       popW.button("minmax").hide();
       popW.button("park").hide();
-      popW.setText("Login"); 
+      popW.setText("JOIN"); 
       winF.window("win1").centerOnScreen();
       winF.window("win1").denyMove();
       winF.window("win1").denyResize();  

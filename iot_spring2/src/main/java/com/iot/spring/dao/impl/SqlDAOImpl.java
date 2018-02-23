@@ -23,18 +23,15 @@ public class SqlDAOImpl implements SqlDAO {
 		result=ss.selectList("sql_info.run", sql);
 		return result;
 	}
-	
 	@Override
 	public int sqlUpdate(SqlVO sql, SqlSession ss) {
 		return ss.update("sql_info.run", sql);
 	}
-	
-	@Override //처음 사용한 경우 설정된 데이터베이스 사용하기
+	@Override 
 	public void setDatabase(Map<String, Object> dataBase, SqlSession ss) {
 		ss.selectList("sql_info.selectDatabase", dataBase);
 	}
-
-	@Override //use를 사용한 경우
+	@Override 
 	public void sqlUseDatabase(SqlVO sql, SqlSession ss) {
 		ss.selectList("sql_info.run", sql);
 	}

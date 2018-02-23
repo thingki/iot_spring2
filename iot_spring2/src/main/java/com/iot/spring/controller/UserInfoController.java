@@ -61,7 +61,6 @@ public class UserInfoController {
 	@RequestMapping(value="/checkId", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> checkUserInfo(@RequestBody UserInfoVO ui, HttpSession hs){
 		Map<String, Object> map = new HashMap<String, Object>();
-		
 		map.put("msg", "아이디 사용가능!");
 		map.put("biz", true);
 		hs.setAttribute("checkId", ui.getuId());

@@ -29,6 +29,7 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 	public List<ConnectionInfoVO> getConnectionInfo(ConnectionInfoVO ci) {
 		return cidao.selectConnectionInfo(ci);
 	}
+	
 	//커넥션 추가하기
 	@Override
 	public void insertDbConnection(Map<String,Object> map, ConnectionInfoVO ci) {
@@ -42,8 +43,6 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 	public List<Map<String, Object>> getDatabaseList(int ciNo, HttpSession hs) throws Exception {
 		ConnectionInfoVO ci = cidao.selectConnection(ciNo);
 		hs.setAttribute("ci", ci);
-		
-		
 		DBConnector dbc = new DBConnector(ci);
 		SqlSession ss = dbc.getSqlSession();
 		hs.setAttribute("sqlSession", ss);
@@ -57,13 +56,11 @@ public class ConnectionInfoServiceImpl implements ConnectionInfoService{
 		}	
 		return dbList;
 	}
-
 	@Override
 	public List<TableVO> getTableList(HttpSession hs, String dbName) {
 		SqlSession ss = (SqlSession)hs.getAttribute("sqlSession");
 	     return cidao.selectTableList(ss, dbName);
 	}
-
 	@Override
 	public void getColumnList(HttpSession hs, Map<String, Object> pMap, Map<String, Object> map) {
 		SqlSession ss = (SqlSession)hs.getAttribute("sqlSession");

@@ -30,4 +30,7 @@ public class MenuInfoController {
 		hs.setAttribute("menuList", list);
 		return map;
 	}
+	
+	/*주석이다*/
+	//주석
 }

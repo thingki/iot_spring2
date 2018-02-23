@@ -5,14 +5,12 @@ div#winVP {
 	height: 100%;
 	margin: 10px;
 	}
-	
 html, body {
 	width: 100%; /*provides the correct work of a full-screen layout*/
 	height: 100%; /*provides the correct work of a full-screen layout*/
 	overflow: hidden; /*hides the default body's space*/
 	margin: 0px; /*hides the body's scrolls*/
 }
-
 div.controls {
 	margin: 0px 10px;
 	font-size: 14px;
@@ -20,7 +18,6 @@ div.controls {
 	color: #404040;
 	height: 80px;
 }
-
 .my_ftr {
 	background-color: white;
 	margin-top: 10px;
