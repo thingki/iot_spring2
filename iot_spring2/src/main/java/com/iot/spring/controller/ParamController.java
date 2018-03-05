@@ -45,7 +45,7 @@ public class ParamController {
    }
 
    @RequestMapping("/jsonRequestParamToMap")
-   public @ResponseBody Map<String,Object> jsonRequestParamToMap(@RequestParam(value="obj",required=false) Map <String,Object>map){
+   public @ResponseBody Map<String,Object> jsonRequestParamToMap(@RequestParam(value="obj",required=false) Map<String,Object> map){
       log.info("jsonRequestParamToMap=>{}", map);
       return map;
    }
@@ -72,7 +72,7 @@ public class ParamController {
    }
    
    @RequestMapping("/formToMap")
-   public @ResponseBody Map<String,Object> formToMap(Map <String,Object>map){
+   public @ResponseBody Map<String,Object> formToMap(Map<String,Object> map){
       log.info("formToMap=>{}", map);
       return map;
    }

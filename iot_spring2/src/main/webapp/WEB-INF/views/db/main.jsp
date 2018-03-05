@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <title>HiediSQL</title>
 </head>
 <style>
@@ -90,9 +90,14 @@ function sqlRunCB(xhr,res){
 	}else if(res.errorMsg){
 		alert(res.errorMsg);
 	}
-	cTabs.tabs("result1").setActive(true);
+	if(cTabs.tabs("result1")!=null){
+		cTabs.tabs("result1").setActive(true);
+	}
 	msgLog(res);
-	
+	var key = changeDatabase(res);
+	if(key!=null){
+		dbTree.openItem(key);
+	};
 	/* use를 사용하면 해당 데이터베이스가 선택되게 하기!
 	var used = ${useDatabase};
 	if(used!=null){
@@ -100,15 +105,23 @@ function sqlRunCB(xhr,res){
 		dbTree.openItem(parentId);
 	} */
 }
+function changeDatabase(res){
+	for(var key in dbTree.items){
+		console.log(dbTree.items[key].text);
+		if('${useDatabase}'==dbTree.items[key].text){
+			console.log("true");
+			return key;
+		}
+	}
+	return null;
+}
 //커넥션 추가 콜백
 function addConnectionCB(xhr, res){
 	res = JSON.parse(res);
-	alert(res.msg);
-	
 	if(res.msg){
-		alert(msg);
+		alert(res.msg);
 	}
-	console.log(res.msg[0]);
+	console.log(res.msg);
 }
 //더블클릭하면 테이블 리스트를 레벨2에 나열 콜백
 function tableListCB(res){
@@ -126,11 +139,12 @@ function tableListCB(res){
 	}
 	dbTree.openItem(parentId);
 }
+
 //데이터 베이스 리스트 받아옴 콜백
-function dbListCB(res){
-	console.log(res);
-	if(res.error){
-		alert(res.error);
+function dbListCB(xhr, res){
+	res = JSON.parse(res);
+	if(res.msg){
+		alert(res.msg);
 		return;
 	}
 	var parentId = res.parentId;
@@ -139,7 +153,7 @@ function dbListCB(res){
 		var text = db.text;
 		dbTree.addItem(id, text, parentId);
 	}
-	dbTree.openItem(parentId);
+	dbTree.openItem(parentId); //이거 사용
 }
 //레이아웃 만듬
 dhtmlxEvent(window,"load",function(){
@@ -250,6 +264,7 @@ dhtmlxEvent(window,"load",function(){
       if(id=="saveBtn"){
          if(form.validate()){
             form.send("${root}/connection/insert", "post", addConnectionCB);
+            popW.hide();
          }
       }else if(id=="resetBtn"){
          form.clear();
@@ -278,8 +293,6 @@ function connectionListCB(res){
 	dbTree = aLay.attachTreeView({
 	items: res.list
 	});
-	
-	
 	
 	dbTree.attachEvent("onDblClick",function(id){
 		var level = dbTree.getLevel(id);
@@ -316,13 +329,13 @@ function connectionListCB(res){
 			   		{type:"settings", offsetTop:12, name:"sessionManager",labelAlign:"left"},
 			           {type:"input",name:"network", label:"네트워크 유형", value:"MySQL(TCP/IP)"},
 			           {type:"input",name:"ciName", label:"세션 이름", value:udi.ciName},
-			           {type:"input",name:"ciUrl", label:"호스트명/IP", value:udi.ciUrl, validate:"ValidInteger", required:true},
+			           {type:"input",name:"ciUrl", label:"호스트명/IP", value:udi.ciUrl, required:true},
 			           {type:"input",name:"ciUser", label:"사용자", value:udi.ciUser, required:true},
 			           {type:"password",name:"ciPwd", label:"암호",required:true},
 			           {type:"input",name:"ciPort", label:"포트", value:udi.ciPort, validate:"ValidInteger", required:true},
 			           {type:"input",name:"ciDatabase", value:udi.ciDatabase, label:"데이터베이스"}, //value
 			           {type:"input",name:"ciEtc", value:udi.ciEtc, label:"설명"},
-			           {type: "block", blockOffset: 0, list: [
+			           {type: "block", blockOffset: 0, name:"ciNo", value:udi.ciNo, list: [
 			              {type: "button", name:"openBtn",value: "열기"},
 			              {type: "newcolumn"},
 			              {type: "button", name:"cancelBtn1",value: "취소"}
@@ -333,9 +346,13 @@ function connectionListCB(res){
 			   
 			   formDB.attachEvent("onButtonClick",function(id){
 				      if(id=="openBtn"){
-				    	  var au = new AjaxUtil("${root}/connection/db_list/" + rowId, null, "get");
-				          au.send(dbListCB);
-				          popDB.hide();
+				    	  formDB.send("${root}/connection/db_list/"+ udi.ciNo, "get", dbListCB);
+				    	  popDB.hide();
+				    	  return;
+						
+				    	  /* var au = new AjaxUtil("${root}/connection/db_list/" + rowId, null, "get");
+				          au.send(dbListCB); 
+				          popDB.hide();*/
 				      }else if(id=="cancelBtn1"){
 				    	  popDB.hide();
 				      }

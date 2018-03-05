@@ -9,7 +9,7 @@
 <c:set var="pPath" value="${root}/path"/>
 <c:set var="dPath" value="${rPath}/dx"/>
 <c:set var="user" value="${userId}"/>
-<c:set var="ver" value="?version=1d1sd.2.2e122"/>
+<c:set var="ver" value="?version=1d1sd.212d2"/>
 <link rel="stylesheet" type="text/css" href="${dPath}/fonts/font_roboto/roboto.css${ver}"/>
 <link rel="stylesheet" type="text/css" href="${dPath}/skins/skyblue/dhtmlx.css"/>
 <link rel="stylesheet" type="text/css" href="${dPath}/skins/web/dhtmlx.css"/>
@@ -19,11 +19,11 @@
 <link rel="stylesheet" type="text/css" href="${rPath}/css/headerandbody.css${ver}"/>
 <link rel="stylesheet" type="text/css" href="${rPath}/css/helloworld.css${ver}"/>
 
-<link rel="stylesheet" type="text/css" href="${rPath}/css/deadline.css${ver}"/>
+<link rel="stylesheet" type="text/css" href="${rPath}/css/team/main.css${ver}"/>
+
 <script src="${rPath}/js/jquery.min.js${ver}" charset="utf-8"></script>
 <script src="${rPath}/js/common.js${ver}"></script>
 <script src="${dPath}/dhtmlx.js${ver}" charset="utf-8"></script>
-<script src="${dPath}/deadline.js${ver}" ></script>
 <!-- Chrome, Safari, IE -->
 <link rel="shortcut icon" href="${rPath}/imgs/favicon.png">
 <!-- Firefox, Opera (Chrome and Safari say thanks but no thanks) -->

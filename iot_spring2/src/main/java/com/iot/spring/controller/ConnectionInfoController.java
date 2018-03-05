@@ -28,7 +28,7 @@ public class ConnectionInfoController {
 	@Autowired
 	private ConnectionInfoService cis;
 	
-	private static final Logger log = LoggerFactory.getLogger(ConnectionInfoService.class);
+	private static final Logger log = LoggerFactory.getLogger(ConnectionInfoController.class);
 	
 	@RequestMapping("/connector_list")
 	public @ResponseBody Map<String, Object> getConnectionList(
@@ -47,17 +47,14 @@ public class ConnectionInfoController {
 	}
 	
 	@RequestMapping(value="/db_list/{ciNo}", method=RequestMethod.GET)
-	public @ResponseBody Map<String, Object> getDatabaseList(@PathVariable("ciNo") int ciNo,
-			Map<String, Object> map, HttpSession hs) {
-		List<Map<String, Object>> dbList;
+	public @ResponseBody Map<String, Object> getDatabaseList(@Valid ConnectionInfoVO ciVo, HttpSession hs) {
+		Map<String, Object> dbMap = new HashMap<String, Object>();
 		try {
-			dbList = cis.getDatabaseList(ciNo, hs);
-			map.put("list", dbList);
-			map.put("parentId", ciNo);
+			cis.getDatabaseList(ciVo, hs, dbMap);
 		} catch (Exception e) {
-			map.put("error", e.getMessage());	
+			dbMap.put("error", e.getMessage());	
 		}
-		return map;
+		return dbMap;
 	}
 	@RequestMapping(value="/tables/{dbName}/{parentId}", method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getTableList(
@@ -66,6 +63,8 @@ public class ConnectionInfoController {
 			HttpSession hs,
 			Map<String,Object> map) {
 		List<TableVO>tableList = cis.getTableList(hs, dbName);
+		log.info("dbName=>{}", dbName);
+		log.info("parentId=>{}", parentId);
 		map.put("list", tableList);
 		map.put("parentId", parentId);
 		return map;
@@ -79,7 +78,7 @@ public class ConnectionInfoController {
 		Map<String, Object> pMap = new HashMap<String, Object>();
 		pMap.put("dbName", dbName);
 		pMap.put("tableName", tableName);
-		
+		hs.setAttribute("useDatabase", dbName);
 		cis.getColumnList(hs, pMap, map);
 		return map;
 	}

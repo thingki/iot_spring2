@@ -30,9 +30,9 @@ public class ConnectionInfoDAOImpl implements ConnectionInfoDAO {
 		return cilist;
 	}
 	@Override
-	public ConnectionInfoVO selectConnection(int ciNo) {
+	public ConnectionInfoVO selectConnection(ConnectionInfoVO ciVo) {
 		SqlSession ss = ssf.openSession();
-		ConnectionInfoVO ci = ss.selectOne("connection_info.selectConncetionInfoWithCiNo", ciNo);
+		ConnectionInfoVO ci = ss.selectOne("connection_info.selectConncetionInfoWithCiNo", ciVo);
 		ss.close();
 		return ci;
 	}

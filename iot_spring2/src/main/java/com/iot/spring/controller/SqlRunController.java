@@ -51,7 +51,11 @@ public class SqlRunController {
 			queries++;
 			if(sql.indexOf("use")==0) {
 				sqlvo.setSqlTa(sql);
-				hs.removeAttribute("useDatabase"); 
+				hs.removeAttribute("useDatabase");
+				String useDatabase = sql.replace("use", "").replace(";", "").trim();
+				useDatabase = useDatabase.trim();
+				
+				hs.setAttribute("useDatabase", useDatabase);
 				sqlService.useDatabaseSql(sqlvo, map, hs);
 			}else if(sql.indexOf("select")==0){
 				sqlvo.setSqlTa(sql);

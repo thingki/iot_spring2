@@ -1,18 +1,15 @@
 package com.iot.spring.service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
-import com.iot.spring.vo.ColumnVO;
-import com.iot.spring.vo.ConnectionInfoVO;
-import com.iot.spring.vo.TableVO;
+import com.iot.spring.vo.*;
 
 public interface ConnectionInfoService {
 	public List<ConnectionInfoVO> getConnectionInfo(ConnectionInfoVO ci); //로그인한 아이디가 가지고 있는 커넥션 목록가져오기
 	
-	public List<Map<String, Object>> getDatabaseList(int ciNo, HttpSession hs) throws Exception;//커넥션 클릭하면 데이터베이스 나오기
+	public void getDatabaseList(ConnectionInfoVO ciVo, HttpSession hs, Map<String, Object> dbMap) throws Exception;//커넥션 클릭하면 데이터베이스 나오기
 	
 	public void insertDbConnection(Map<String,Object> map, ConnectionInfoVO ci); //커넥션 추가하기!
 	
