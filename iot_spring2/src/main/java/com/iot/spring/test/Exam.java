@@ -15,23 +15,31 @@ public class Exam {
 		    String returnText = "";
 		 
 		    try {
-		        url = new URL("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?serviceKey=peWkmeOBUcoT4b1Oqd7%2FotBYLzAO%2BWBymO82ftCMolY%2Bs9AI1ppnNVO4U9a%2Blhohtj1X38Iy4ENC1ReL1aHKWg%3D%3D&numOfRoews=10&pageNo=1&startPage=1&MobileOS=ETC&MobileApp=AppTest&arrange=A&contenTypeId=15&mapX=127.028900&mapY=37.496243&radius=500&listYN=Y");
-		 
+		        url = new URL("http://api.visitkorea.or.kr/openapi/service/rest/KorService/"
+		        		+ "locationBasedList?"
+		        		+ "serviceKey=peWkmeOBUcoT4b1Oqd7%2FotBYLzAO%2BWBymO82ftCMolY%2Bs9AI1ppnNVO4U9a%2Blhohtj1X38Iy4ENC1ReL1aHKWg%3D%3D"
+		        		+ "&numOfRoews=10"
+		        		+ "&pageNo=1"
+		        		+ "&startPage=1"
+		        		+ "&MobileOS=ETC"
+		        		+ "&MobileApp=AppTest"
+		        		+ "&arrange=A"
+		        		+ "&contenTypeId=15"
+		        		+ "&mapX=127.028900"
+		        		+ "&mapY=37.496243"
+		        		+ "&radius=500"
+		        		+ "&listYN=Y");
 		        conn = (HttpURLConnection) url.openConnection();
 		        conn.setRequestProperty("Accept", "application/json");
 		        conn.setRequestMethod("GET");
 		        conn.connect();
-		 
 		        br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-		 
 		        sb = new StringBuffer();
-		 
 		        while ((jsonData = br.readLine()) != null) {
 		            sb.append(jsonData);
 		        }
 		        System.out.println("sb= "+sb.toString());
 		        returnText = sb.toString();
-		 
 		    } catch (IOException e) {
 		        e.printStackTrace();
 		    } finally {
